@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Calculator</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color:  #b3cdbf  ;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      
+      .calculator {
+        width: 300px;
+        background-color: #D4D4D2;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(145, 133, 78, 0.2);
+      }
+      
+      .calculator input {
+        width: 100%;
+        height: 60px;
+        font-size: 28px;
+        text-align: right;
+        color: #1C1C1C;
+        background-color: transparent;
+        border:none;
+        margin-bottom: 20px;
+        padding-right: 10px;
+      }
+      
+      .calculator .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+      }
+      
+      .calculator .grid.double {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      
+      .calculator button {
+        width: 70px;
+        height:70px;
+        font-size: 24px;
+        color: #fff;
+        background-color:#505050;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+      }
+      
+      .calculator button.operator {
+        background-color: #FF9500;
+      }
+      
+      .calculator button.clear {
+        grid-column: span 2;
+        background-color: #f44336;
+      }
+      
+      .calculator button.backspace {
+        background-color: #0FB5EE;
+      }
+      
+      .calculator button.decimal {
+        background-color:#505050 ;
+      }
+      
+      .calculator button.percentage {
+        background-color:  turquoise;
+      }
+      
+      .calculator button.equals {
+        grid-column: span 2;
+        width: 140px;
+        background-color:#34DA4F  ;
+        
+
+        
+      }
+      
+  </style>
+</head>
+<body>
+    <div class="calculator">
+        <input id="display" placeholder= "CALCULATOR        " type="text" disabled>
+        <button class="clear">AC</button>
+        <button class="backspace">⌫</button>
+        <button class="percentage">%</button>
+        <button class="operator">÷</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button class="operator">&times;</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button class="operator">-</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button class="operator">+</button>
+        <button class="decimal">•</button>
+        <button>0</button>
+        <button class="equals" onclick="calculateResult()">=</button>
+        
+      </div>
+      
+
+  <script>
+    let displayValue = '';
+
+    function appendNumber(number) {
+      displayValue += number;
+      updateDisplay();
+    }
+
+    function appendOperator(operator) {
+      displayValue += operator;
+      updateDisplay();
+    }
+
+    function appendDecimal(decimal) {
+      if (!displayValue.includes(decimal)) {
+        displayValue += decimal;
+        updateDisplay();
+      }
+    }
+
+    function calculatePercentage() {
+      displayValue = eval(displayValue) / 100;
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      displayValue = '';
+      updateDisplay();
+    }
+
+    function deleteLastCharacter() {
+      displayValue = displayValue.slice(0, -1);
+      updateDisplay();
+    }
+
+    function calculateResult() {
+      try {
+        displayValue = eval(displayValue);
+      } catch (error) {
+        displayValue = 'Error';
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      document.getElementById('display').value = displayValue;
+    }
+
+    // Event listeners for button clicks
+    document.querySelectorAll('.calculator button').forEach((button) => {
+      button.addEventListener('click', () => {
+        const buttonValue = button.textContent;
+        if (buttonValue === 'AC') {
+          clearDisplay();
+        } else if (buttonValue === '⌫') {
+          deleteLastCharacter();
+        } else if (buttonValue === '=') {
+          calculateResult();
+        } else if (button.classList.contains('operator')) {
+          appendOperator(buttonValue);
+        } else if (button.classList.contains('decimal')) {
+          appendDecimal(buttonValue);
+        } else if (button.classList.contains('percentage')) {
+          calculatePercentage();
+        } else {
+          appendNumber(buttonValue);
+        }
+      });
+    });
+    
+  </script>
+</body>
+</html>
